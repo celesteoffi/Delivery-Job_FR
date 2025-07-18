@@ -89,9 +89,9 @@ RegisterNetEvent('rk_jobdelivery:endJob', function(jobStatus, reason)
     {jobStatus, identifier}, function(affectedRows)
         if affectedRows > 0 then
             if jobStatus == 'completed' then
-                TriggerClientEvent('ox_lib:notify', src, {title = 'Lavoro', description = 'Lavoro completato con successo!', type = 'success'})
+                TriggerClientEvent('ox_lib:notify', src, {title = 'Travail', description = 'Travail terminé avec succès !', type = 'success'})
             elseif jobStatus == 'abandoned' then
-                TriggerClientEvent('ox_lib:notify', src, {title = 'Lavoro', description = reason or 'Hai abbandonato il lavoro.', type = 'info'})
+                TriggerClientEvent('ox_lib:notify', src, {title = 'Travail', description = reason or 'Tu as quitté ton travail.', type = 'info'})
             end
         end
     end)
@@ -126,13 +126,13 @@ RegisterNetEvent('rk_jobdelivery:payPlayer', function()
         local xPlayer = ESX and ESX.GetPlayerFromId(src)
         if xPlayer then
             xPlayer.addMoney(amount) 
-            TriggerClientEvent('ox_lib:notify', src, {title = 'Pagamento', description = 'Hai ricevuto $'..amount..' in contanti!', type = 'success'})
+            TriggerClientEvent('ox_lib:notify', src, {title = 'Paiement', description = 'Vous avez reçu $'..amount..' en espèces !', type = 'success'})
         else
           
-            TriggerClientEvent('ox_lib:notify', src, {title = 'Pagamento', description = 'Pagamento di $'..amount..' elaborato!', type = 'success'})
+            TriggerClientEvent('ox_lib:notify', src, {title = 'Paiement', description = 'Paiement de $'..amount..' élaborer!', type = 'success'})
         end
     else
-        TriggerClientEvent('ox_lib:notify', src, {title = 'Pagamento', description = 'Hai ricevuto $'..amount..' in contanti!', type = 'success'})
+        TriggerClientEvent('ox_lib:notify', src, {title = 'Paiement', description = 'Vous avez reçu $'..amount..' en espèces !', type = 'success'})
     end
     
  
