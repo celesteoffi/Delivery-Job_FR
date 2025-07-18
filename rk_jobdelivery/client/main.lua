@@ -53,7 +53,7 @@ local function setNextConsegnaBlip()
                 local pos = GetEntityCoords(ped)
                 local dist = #(pos - coords)
                 if dist < 3.0 then
-                    lib.notify({title = 'Consegna', description = 'Hai consegnato il pacco #'..consegnaIndex, type = 'success'})
+                    lib.notify({title = 'Livraison', description = 'Vous avez livré le colis #'..consegnaIndex, type = 'success'})
                     RemoveBlip(consegnaBlip)
                     consegnaBlip = nil
                     consegnaIndex = consegnaIndex + 1
@@ -61,7 +61,7 @@ local function setNextConsegnaBlip()
                         Wait(1000)
                         setNextConsegnaBlip()
                     else
-                        lib.notify({title = 'Consegna', description = 'Hai completato tutte le consegne!', type = 'success'})
+                        lib.notify({title = 'Livraison', description = 'Vous avez terminé toutes les livraisons !', type = 'success'})
                     end
                     break
                 end
@@ -165,7 +165,7 @@ local function creaBlipRitorno(coords)
     SetBlipRoute(returnBlip, true)
     SetBlipRouteColour(returnBlip, 2)
     BeginTextCommandSetBlipName("STRING")
-    AddTextComponentString("Ritorna al deposito")
+    AddTextComponentString("Retour au stockage")
     EndTextCommandSetBlipName(returnBlip)
 end
 
@@ -206,7 +206,7 @@ local function terminaLavoro(daTarget, reason)
     
  
     if daTarget then
-        TriggerServerEvent('rk_jobdelivery:endJob', 'abandoned', reason or 'Hai smesso di lavorare.')
+        TriggerServerEvent('rk_jobdelivery:endJob', 'abandonné', reason or 'Tu as arrêté de travailler.')
     end
 end
 
@@ -217,7 +217,7 @@ local function startConsegne()
   
     exports.ox_target:addLocalEntity(veicolo, {
         {
-            label = 'Prendi pacco',
+            label = 'Prendre le paquet',
             icon = 'fa-solid fa-box',
             bones = {'door_dside_r', 'door_pside_r', 'boot'},
             distance = 3.0,
@@ -229,7 +229,7 @@ local function startConsegne()
                 SetVehicleDoorOpen(veicolo, 2, false, false)
                 SetVehicleDoorOpen(veicolo, 3, false, false)
                 
-                lib.notify({title = 'Pacco', description = 'Prendendo il pacco...', type = 'info'})
+                lib.notify({title = 'Emballer', description = 'Prendre le paquet...', type = 'info'})
                 
                
                 local model = 'prop_cs_cardbox_01'
@@ -261,7 +261,7 @@ local function startConsegne()
                 local coords = Config.Consegne[consegnaIndex]
                 creaBlipConsegna(coords)
                 creaMarkerConsegna(coords)
-                lib.notify({title = 'Consegna', description = 'Porta il pacco al cliente!', type = 'info'})
+                lib.notify({title = 'Livraison', description = 'Apportez le colis au client !', type = 'info'})
                 
                 exports.ox_target:addSphereZone({
                     coords = coords,
@@ -270,7 +270,7 @@ local function startConsegne()
                     options = {
                         {
                             name = 'suona_cliente_'..consegnaIndex,
-                            label = 'Suona al cliente',
+                            label = 'Sonner au client',
                             icon = 'fa-solid fa-bell',
                             canInteract = function(entity, distance, coords, name)
                                 return paccoInMano
@@ -290,7 +290,7 @@ local function startConsegne()
                                 RequestAnimDict("timetable@jimmy@doorknock@")
                                 while not HasAnimDictLoaded("timetable@jimmy@doorknock@") do Wait(10) end
                                 TaskPlayAnim(ped, "timetable@jimmy@doorknock@", "knockdoor_idle", 8.0, -8.0, 2000, 49, 0, false, false, false)
-                                lib.notify({title = 'Consegna', description = 'Stai consegnando il pacco...', type = 'info'})
+                                lib.notify({title = 'Livraison', description = 'Vous livrez le colis...', type = 'info'})
                                 Wait(2000)
                             
                                 local pedModel = 'a_m_m_business_01'
@@ -338,18 +338,18 @@ local function startConsegne()
                                 consegnaIndex = consegnaIndex + 1
                                 if Config.Consegne[consegnaIndex] then
                                     Wait(1000)
-                                    lib.notify({title = 'Consegna', description = 'Torna al veicolo per il prossimo pacco!', type = 'info'})
+                                    lib.notify({title = 'Livraison', description = 'Retour au véhicule pour le prochain colis !', type = 'info'})
                                     creaBlipConsegna(Config.Consegne[consegnaIndex])
                                 else
                                     
                                     showScoreboard(false)
                                     lavoroAttivo = false
-                                    lib.notify({title = 'Consegna', description = 'Hai completato tutte le consegne! Torna al deposito per consegnare il veicolo.', type = 'success'})
+                                    lib.notify({title = 'Livraison', description = 'Vous avez effectué toutes les livraisons ! Retournez au dépôt pour restituer le véhicule..', type = 'success'})
                                     creaBlipRitorno(Config.Ped.coords)
                                    
                                     exports.ox_target:addLocalEntity(veicolo, {
                                         {
-                                            label = 'Consegna veicolo e ricevi paga',
+                                            label = 'Livraison du véhicule et réception du paiement',
                                             icon = 'fa-solid fa-money-bill',
                                             canInteract = function(entity, distance, coords, name)
                                                 local pos = GetEntityCoords(PlayerPedId())
@@ -395,7 +395,7 @@ CreateThread(function()
     SetBlipColour(blip, 5)
     SetBlipAsShortRange(blip, true)
     BeginTextCommandSetBlipName("STRING")
-    AddTextComponentString("Centro Consegne")
+    AddTextComponentString("Centre de livraison")
     EndTextCommandSetBlipName(blip)
 
    
@@ -410,7 +410,7 @@ CreateThread(function()
 
     exports.ox_target:addLocalEntity(ped, {
         {
-            label = 'Parla con il postino',
+            label = 'Parlez au facteur',
             icon = 'fa-solid fa-envelope',
             canInteract = function(entity, distance, coords, name)
                 return not lavoroAttivo
@@ -420,7 +420,7 @@ CreateThread(function()
             end
         },
         {
-            label = 'Smetti di lavorare',
+            label = 'Arrêter de travailler',
             icon = 'fa-solid fa-xmark',
             canInteract = function(entity, distance, coords, name)
                 return lavoroAttivo and (consegnaIndex <= #Config.Consegne)
@@ -455,7 +455,7 @@ RegisterNetEvent('rk_jobdelivery:restoreJob', function(jobData)
     consegnaIndex = jobData.current_delivery
     lavoroAttivo = true
     
-    lib.notify({title = 'Lavoro', description = 'Ripristino del lavoro in corso...', type = 'info'})
+    lib.notify({title = 'Travail', description = 'restauration en cours...', type = 'info'})
     
    
     spawnJobEntities()
@@ -494,7 +494,7 @@ function spawnJobEntities()
 
         exports.ox_target:addLocalEntity(carrelloProp, {
             {
-                label = 'Prendi carrello',
+                label = 'Obtenir le panier',
                 icon = 'fa-solid fa-dolly',
                 canInteract = function(entity, distance, coords, name)
                     return not carrelloInMano
@@ -507,7 +507,7 @@ function spawnJobEntities()
                     RequestAnimDict("missfinale_c2ig_11")
                     while not HasAnimDictLoaded("missfinale_c2ig_11") do Wait(10) end
                     TaskPlayAnim(ped, "missfinale_c2ig_11", "pushcar_offcliff_m", 8.0, -8.0, -1, 49, 0, false, false, false)
-                    lib.notify({title = 'Carrello', description = 'Stai spingendo il carrello!', type = 'success'})
+                    lib.notify({title = 'Panier', description = 'Tu pousses le chariot !', type = 'success'})
                    
                     CreateThread(function()
                         while carrelloInMano and carrelloProp and DoesEntityExist(carrelloProp) do
@@ -545,7 +545,7 @@ function spawnJobEntities()
        
         exports.ox_target:addLocalEntity(veicolo, {
             {
-                label = 'Carica carrello',
+                label = 'Charger le chariot',
                 icon = 'fa-solid fa-truck-loading',
                 bones = {'door_dside_r', 'door_pside_r', 'boot'},
                 distance = 4.0,
@@ -558,7 +558,7 @@ function spawnJobEntities()
                         SetVehicleDoorOpen(veicolo, 2, false, false)
                         SetVehicleDoorOpen(veicolo, 3, false, false)
                         
-                        lib.notify({title = 'Carrello', description = 'Caricando il carrello...', type = 'info'})
+                        lib.notify({title = 'Panier', description = 'Chargement du chariot...', type = 'info'})
                         
                      
                         local offset = GetOffsetFromEntityInWorldCoords(veicolo, 0.0, -2.8, 0.8) 
@@ -582,7 +582,7 @@ function spawnJobEntities()
                         end
                         
                         carrelloInMano = false
-                        lib.notify({title = 'Carrello', description = 'Hai caricato il carrello!', type = 'success'})
+                        lib.notify({title = 'Panier', description = 'Vous avez chargé votre panier !', type = 'success'})
                         
                         
                         startConsegne()

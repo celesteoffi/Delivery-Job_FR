@@ -16,14 +16,14 @@ RegisterNetEvent('rk_jobdelivery:startJob', function()
     local playerName = GetPlayerName(src)
     
     if not identifier then
-        TriggerClientEvent('ox_lib:notify', src, {title = 'Errore', description = 'Impossibile identificare il giocatore!', type = 'error'})
+        TriggerClientEvent('ox_lib:notify', src, {title = 'Erreur', description = 'Impossible d\'identifier le joueur!', type = 'error'})
         return
     end
     
     
     MySQL.Async.fetchScalar('SELECT id FROM rk_jobdelivery WHERE player_identifier = ? AND job_status = "active"', {identifier}, function(activeJob)
         if activeJob then
-            TriggerClientEvent('ox_lib:notify', src, {title = 'Lavoro', description = 'Hai già un lavoro attivo!', type = 'error'})
+            TriggerClientEvent('ox_lib:notify', src, {title = 'Travail', description = 'Vous avez déjà un emploi actif!', type = 'error'})
             return
         end
         
@@ -35,10 +35,10 @@ RegisterNetEvent('rk_jobdelivery:startJob', function()
         MySQL.Async.execute('INSERT INTO rk_jobdelivery (player_identifier, player_name, total_deliveries, vehicle_model, vehicle_coords) VALUES (?, ?, ?, ?, ?)', 
         {identifier, playerName, totalDeliveries, vehModel, vehCoords}, function(insertId)
             if insertId then
-                TriggerClientEvent('ox_lib:notify', src, {title = 'Lavoro', description = 'Lavoro iniziato con successo!', type = 'success'})
+                TriggerClientEvent('ox_lib:notify', src, {title = 'Travail', description = 'Les travaux ont démarré avec succès!', type = 'success'})
                 TriggerClientEvent('rk_jobdelivery:jobStarted', src, insertId)
             else
-                TriggerClientEvent('ox_lib:notify', src, {title = 'Errore', description = 'Errore nell\'avviare il lavoro!', type = 'error'})
+                TriggerClientEvent('ox_lib:notify', src, {title = 'Erreur', description = 'Erreur lors du démarrage du travail!', type = 'error'})
             end
         end)
     end)

@@ -64,7 +64,7 @@ window.addEventListener('message', function(event) {
     if (event.data && event.data.action === 'showScoreboard') {
         ensureScoreboard();
         scoreboardDiv.innerHTML =
-            `<span style="margin-left:0;line-height:1.1;">Consegne: <span id="scoreboard-delivered">${event.data.consegnati}</span> / <span id="scoreboard-total">${event.data.totali}</span></span>` +
+            `<span style="margin-left:0;line-height:1.1;">Livraison: <span id="scoreboard-delivered">${event.data.consegnati}</span> / <span id="scoreboard-total">${event.data.totali}</span></span>` +
             `<img src="img/tablet_bg.png" alt="tablet" style="position:absolute;left:-72px;top:50%;transform:translateY(-50%);width:96px;height:96px;object-fit:contain;opacity:0.93;pointer-events:none;user-select:none;z-index:10000;">`;
         scoreboardDiv.style.display = 'block';
     }
